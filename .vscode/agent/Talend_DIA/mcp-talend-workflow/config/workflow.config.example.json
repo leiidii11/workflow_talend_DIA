@@ -1,0 +1,9 @@
+{
+  "SHAREPOINT_SPEC_PATH": "C:/Users/<utilisateur>/OneDrive - ENTREPRISE/Specs DIA/spec_retraite.xlsx",
+  "WORKSPACE_DIR": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend",
+  "GITHUB_REPO_DIR": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend",
+  "STAGE_01_PATH": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend/.vscode/agent/Talend_DIA/stages/01_Lecture_Spec.md",
+  "STAGE_02_PATH": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend/.vscode/agent/Talend_DIA/stages/02_Génération_DDL_DML.md",
+  "STAGE_03_PATH": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend/.vscode/agent/Talend_DIA/stages/03_Update_Git.md",
+  "STAGE_04_PATH": "C:/Users/<utilisateur>/ALPTIS/Projets IA/Workflow Talend/.vscode/agent/Talend_DIA/stages/04_Génération_Talend.md"
+}

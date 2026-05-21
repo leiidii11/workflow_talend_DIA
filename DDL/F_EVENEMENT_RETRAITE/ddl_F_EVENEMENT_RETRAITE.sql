@@ -1,0 +1,21 @@
+CREATE OR REPLACE TABLE DIA.F_EVENEMENT_RETRAITE (
+    SK_F_EVENEMENT_RETRAITE                  NUMBER(38,0)       NOT NULL autoincrement,
+    ID_EVENEMENT                             NUMBER(38,0)       NOT NULL,
+    CD_STATUT                                TIMESTAMP_NTZ(9),
+    DT_MODIFICATION                          TIMESTAMP_NTZ(9),
+    DT_EFFET                                 TIMESTAMP_NTZ(9),
+    PLUS_VALUE_TAXABLE                       NUMBER(38,0),
+    PRELEVEMENT_FISCAUX                      NUMBER(38,0),
+    PRELEVEMENT_SOCIAUX                      NUMBER(38,0),
+    TX_FRAIS_EVENEMENT                       NUMBER(38,0),
+    ID_CONTRAT                               NUMBER(38,0),
+    FK_D_CONTRAT_RETRAITE                    NUMBER(38,0),
+    FK_D_CONTRAT_RETRAITE_DERNIERE_VERSION   NUMBER(38,0),
+    CD_EVENEMENT                             VARCHAR(16777216),
+    FK_D_EVENEMENT_RETRAITE                  NUMBER(38,0),
+    DT_CREA                                  TIMESTAMP_NTZ(9),
+    DT_MODIF                                 TIMESTAMP_NTZ(9),
+    DT_ALIM                                  TIMESTAMP_NTZ(9),
+    CONSTRAINT PK_F_EVENEMENT_RETRAITE PRIMARY KEY (SK_F_EVENEMENT_RETRAITE),
+    CONSTRAINT UK_F_EVENEMENT_RETRAITE UNIQUE (ID_EVENEMENT)
+);

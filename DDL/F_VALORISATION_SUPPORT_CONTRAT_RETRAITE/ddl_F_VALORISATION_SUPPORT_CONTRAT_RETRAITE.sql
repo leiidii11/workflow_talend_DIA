@@ -1,0 +1,23 @@
+CREATE OR REPLACE TABLE DIA.F_VALORISATION_SUPPORT_CONTRAT_RETRAITE (
+    SK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE   NUMBER(38,0)       NOT NULL autoincrement,
+    ID_SUPPORT_COMPOSANT                         NUMBER(38,0),
+    DT_VALORISATION                              TIMESTAMP_NTZ(9),
+    DT_SITUATION_CONTRAT                         TIMESTAMP_NTZ(9),
+    DT_FIN_VALORISATION                          TIMESTAMP_NTZ(9),
+    PLUS_OU_MOINS_VALUE                          NUMBER(38,0),
+    MT_SUPPORT                                   NUMBER(38,0),
+    NB_PART                                      NUMBER(38,0),
+    ID_SUPPORT_RETRAITE                          NUMBER(38,0),
+    FK_D_SUPPORT_RETRAITE                        NUMBER(38,0),
+    EST_DERNIERE_SITUATION                       VARCHAR(16777216),
+    ID_CONTRAT                                   NUMBER(38,0),
+    FK_D_CONTRAT_RETRAITE                        NUMBER(38,0),
+    FK_D_CONTRAT_RETRAITE_DERNIERE_VERSION       NUMBER(38,0),
+    ID_PROFIL_GESTION                            NUMBER(38,0),
+    FK_D_PROFIL_GESTION_RETRAITE                 NUMBER(38,0),
+    DT_CREA                                      TIMESTAMP_NTZ(9),
+    DT_MODIF                                     TIMESTAMP_NTZ(9),
+    DT_ALIM                                      TIMESTAMP_NTZ(9),
+    CONSTRAINT PK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE PRIMARY KEY (SK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE),
+    CONSTRAINT UK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE UNIQUE (ID_SUPPORT_COMPOSANT, DT_VALORISATION, DT_SITUATION_CONTRAT, DT_FIN_VALORISATION)
+);

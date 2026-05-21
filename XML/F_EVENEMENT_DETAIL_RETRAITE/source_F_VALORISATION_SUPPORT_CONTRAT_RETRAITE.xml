@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><schema dbmsId="snowflake_id"><column comment="" default="" key="false" label="SK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE" length="16777216" nullable="true" originalDbColumnName="SK_F_VALORISATION_SUPPORT_CONTRAT_RETRAITE" originalLength="0" pattern="" precision="0" talendType="id_String" type="VARCHAR"/></schema>

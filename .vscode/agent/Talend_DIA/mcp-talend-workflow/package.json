@@ -1,0 +1,14 @@
+{
+  "name": "mcp-talend-workflow",
+  "version": "1.0.0",
+  "description": "Serveur MCP pour partager et personnaliser talend-workflow.md",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  }
+}
