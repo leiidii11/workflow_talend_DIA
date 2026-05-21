@@ -1,6 +1,8 @@
 # Partage du workflow Talend via MCP
 
-Ce dossier contient un serveur MCP local pour partager automatiquement `talend-workflow.md` avec toute l'équipe.
+Ce dossier contient un serveur MCP local Python pour partager automatiquement `talend-workflow.md` avec toute l'equipe.
+
+Mode d'execution: zero-install pour les utilisateurs finaux (pas besoin d'installer Python manuellement).
 
 ## Objectif
 
@@ -10,58 +12,67 @@ Ce dossier contient un serveur MCP local pour partager automatiquement `talend-w
 
 ## Outils MCP exposes
 
-1. `get_workflow_latest`
+1. `check_first_launch`
+   - Detecte si la config locale existe. Si absent (premier lancement), retourne la liste des chemins a renseigner.
+2. `save_user_config`
+   - Reçoit les chemins fournis et cree `config/workflow.config.local.json` (jamais versionne).
+3. `get_workflow_latest`
    - Retourne le contenu central du workflow et un hash SHA-256.
-2. `validate_user_paths`
+4. `validate_user_paths`
    - Verifie les chemins de configuration utilisateur (`*_PATH`, `*_DIR`).
-3. `render_workflow_for_user`
+5. `render_workflow_for_user`
    - Applique les variables `{{VARIABLE}}` puis produit un rendu personnalise.
 
-## Installation
+## Installation (zero install)
 
-1. Ouvrir un terminal dans ce dossier.
-2. Installer les dependances:
-
-```powershell
-npm install
-```
-
-3. Creer la config utilisateur locale:
-
-```powershell
-Copy-Item .\config\workflow.config.example.json .\config\workflow.config.local.json
-```
-
-4. Editer `config/workflow.config.local.json` avec vos vrais chemins.
+1. Cloner le repo et ouvrir le workspace dans VS Code.
+2. VS Code detecte automatiquement le serveur MCP via `.vscode/mcp.json` (deja versionne).
+3. Au premier lancement, un bootstrap telecharge Python embeddable + dependances dans `.runtime/`.
+4. Appeler `check_first_launch` : il retourne les chemins a renseigner.
+5. Appeler `save_user_config` avec vos chemins : la config locale est creee et stockee uniquement sur votre machine.
 
 ## Lancer le serveur MCP
 
 ```powershell
-npm start
+powershell -NoProfile -ExecutionPolicy Bypass -File run-mcp.ps1
 ```
 
-## Exemple de declaration dans VS Code (mcp.json)
+## Declaration VS Code (mcp.json)
+
+Deja present dans `.vscode/mcp.json` a la racine du workspace. VS Code le charge automatiquement.
+Le chemin est relatif (`${workspaceFolder}`) donc fonctionne sur toute machine sans modification.
 
 ```json
 {
   "servers": {
     "talend-workflow": {
       "type": "stdio",
-      "command": "node",
+         "command": "powershell",
       "args": [
-        "c:/Users/marcelaa/ALPTIS/Projets IA/Workflow Talend/.vscode/agent/Talend_DIA/mcp-talend-workflow/server.js"
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "${workspaceFolder}/.vscode/agent/Talend_DIA/mcp-talend-workflow/run-mcp.ps1"
       ]
     }
   }
 }
 ```
 
+## Notes zero-install
+
+1. Le bootstrap est prevu pour Windows PowerShell.
+2. Un acces internet est necessaire uniquement au premier lancement pour telecharger le runtime Python et les paquets.
+3. Le runtime local est stocke dans `.runtime/` et reutilise ensuite.
+
 ## Bonnes pratiques de partage
 
 1. Versionner `talend-workflow.md` dans Git (source unique).
-2. Ne jamais versionner `workflow.config.local.json`.
-3. Faire evoluer les variables `{{VARIABLE}}` dans le workflow quand un chemin doit etre personnalise.
-4. Demander aux utilisateurs d'executer `validate_user_paths` avant `render_workflow_for_user`.
+2. Ne jamais versionner `workflow.config.local.json` (deja dans `.gitignore`).
+3. Les chemins `STAGE_*_PATH` sont resolus automatiquement par le serveur — ne pas les ajouter dans la config.
+4. Faire evoluer les variables `{{VARIABLE}}` dans le workflow quand un chemin doit etre personnalise.
+5. Appeler `validate_user_paths` avant `render_workflow_for_user` pour verifier les chemins.
 
 ## Variables dynamiques (optionnel)
 

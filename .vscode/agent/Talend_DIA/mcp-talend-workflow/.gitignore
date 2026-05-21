@@ -1,3 +1,5 @@
-node_modules/
+__pycache__/
+*.pyc
+.runtime/
 output/
 config/workflow.config.local.json
