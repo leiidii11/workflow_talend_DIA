@@ -84,6 +84,24 @@ def ensure_workspace_dirs(workspace_dir: str) -> list[str]:
     return created
 
 
+def validate_path_values(values: dict[str, str]) -> list[dict[str, str]]:
+    validation_errors: list[dict[str, str]] = []
+    for key, raw_value in values.items():
+        if not key.endswith("_PATH") and not key.endswith("_DIR"):
+            continue
+
+        expanded = normalize_path(raw_value)
+        if expanded and not Path(expanded).exists():
+            validation_errors.append({"key": key, "value": expanded, "error": "Chemin introuvable"})
+
+    return validation_errors
+
+
+def write_user_config(values: dict[str, str]) -> None:
+    DEFAULT_CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
+    DEFAULT_CONFIG_FILE.write_text(json.dumps(values, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
 @mcp.tool(name="get_workflow_latest", description="Retourne la version actuelle du workflow et son hash SHA-256.")
 def get_workflow_latest() -> dict[str, Any]:
     if not WORKFLOW_FILE.exists():
@@ -203,14 +221,7 @@ def save_user_config(values: dict[str, str]) -> dict[str, Any]:
     if not isinstance(values, dict):
         raise ValueError("Le parametre 'values' doit etre un objet JSON cle/valeur.")
 
-    validation_errors: list[dict[str, str]] = []
-    for key, raw_value in values.items():
-        if not key.endswith("_PATH") and not key.endswith("_DIR"):
-            continue
-
-        expanded = normalize_path(raw_value)
-        if expanded and not Path(expanded).exists():
-            validation_errors.append({"key": key, "value": expanded, "error": "Chemin introuvable"})
+    validation_errors = validate_path_values(values)
 
     if validation_errors:
         return {
@@ -219,14 +230,112 @@ def save_user_config(values: dict[str, str]) -> dict[str, Any]:
             "validationErrors": validation_errors,
         }
 
-    DEFAULT_CONFIG_FILE.parent.mkdir(parents=True, exist_ok=True)
-    DEFAULT_CONFIG_FILE.write_text(json.dumps(values, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_user_config(values)
 
     return {
         "saved": True,
         "configPath": str(DEFAULT_CONFIG_FILE),
         "message": "Configuration enregistree avec succes. Le workflow est pret.",
         "variables": sorted(values.keys()),
+    }
+
+
+@mcp.tool(
+    name="run_talend_workflow",
+    description=(
+        "Outil tout-en-un: si premiere execution, demande les paths utilisateur; "
+        "sinon lance directement le workflow pour un onglet cible."
+    ),
+)
+def run_talend_workflow(
+    onglet: str,
+    userPaths: dict[str, str] | None = None,
+    writeToFile: bool = True,
+    outputPath: str | None = None,
+) -> dict[str, Any]:
+    if not WORKFLOW_FILE.exists():
+        raise FileNotFoundError(f"Fichier workflow introuvable: {WORKFLOW_FILE}")
+
+    # 1) Premier lancement: demander les paths si config absente.
+    if not DEFAULT_CONFIG_FILE.exists() and not userPaths:
+        example_path = (BASE_DIR / "config/workflow.config.example.json").resolve()
+        example_content = json.loads(read_utf8(example_path)) if example_path.exists() else {}
+        required_keys = sorted(example_content.keys())
+
+        return {
+            "status": "needs_user_paths",
+            "onglet": onglet,
+            "message": (
+                "Premier lancement detecte. Fournissez userPaths, puis relancez run_talend_workflow "
+                "avec le meme onglet."
+            ),
+            "requiredKeys": required_keys,
+            "descriptions": {
+                "SHAREPOINT_SPEC_PATH": "Chemin complet vers le fichier Excel de spec.",
+                "WORKSPACE_DIR": "Dossier racine du workspace Talend.",
+                "GITHUB_REPO_DIR": "Dossier racine du depot Git.",
+            },
+        }
+
+    # 2) Si userPaths fournis: valider et sauvegarder (premier lancement ou mise a jour).
+    if userPaths is not None:
+        if not isinstance(userPaths, dict):
+            raise ValueError("Le parametre 'userPaths' doit etre un objet JSON cle/valeur.")
+
+        validation_errors = validate_path_values(userPaths)
+        if validation_errors:
+            return {
+                "status": "invalid_user_paths",
+                "onglet": onglet,
+                "message": "Des chemins sont invalides. Corrigez-les puis relancez run_talend_workflow.",
+                "validationErrors": validation_errors,
+            }
+
+        write_user_config(userPaths)
+
+    # 3) Charger la config existante et la valider.
+    _, values = load_config(None)
+    config_errors = validate_path_values({k: str(v) for k, v in values.items() if isinstance(v, str)})
+    if config_errors:
+        return {
+            "status": "invalid_saved_config",
+            "onglet": onglet,
+            "message": "La configuration sauvegardee contient des chemins invalides.",
+            "validationErrors": config_errors,
+        }
+
+    # 4) Rendu du workflow avec contexte d'onglet.
+    workflow_content = read_utf8(WORKFLOW_FILE)
+    placeholders = find_placeholders(workflow_content)
+    all_values = {**BUILTIN_VARS, **values, "ONGLET_CIBLE": onglet}
+
+    dirs_created = ensure_workspace_dirs(str(all_values["WORKSPACE_DIR"])) if all_values.get("WORKSPACE_DIR") else []
+    rendered_core = render_template(workflow_content, all_values)
+    rendered = (
+        f"<!-- AUTO-CONTEXT: ONGLET_CIBLE={onglet} -->\n\n"
+        f"Contexte d'execution: onglet cible = {onglet}\n\n"
+        f"{rendered_core}"
+    )
+
+    unresolved = [name for name in placeholders if re.search(r"{{\s*" + re.escape(name) + r"\s*}}", rendered)]
+
+    file_written: str | None = None
+    if writeToFile:
+        resolved_output = Path(normalize_path(outputPath) if outputPath else str(DEFAULT_OUTPUT_FILE)).resolve()
+        resolved_output.parent.mkdir(parents=True, exist_ok=True)
+        resolved_output.write_text(rendered, encoding="utf-8")
+        file_written = str(resolved_output)
+
+    return {
+        "status": "ok",
+        "onglet": onglet,
+        "message": "Workflow lance avec succes.",
+        "configPath": str(DEFAULT_CONFIG_FILE),
+        "outputPath": file_written,
+        "dirsCreated": dirs_created,
+        "unresolvedPlaceholders": unresolved,
+        "hash": compute_hash(rendered),
+        "workflow": rendered,
     }
 
 
