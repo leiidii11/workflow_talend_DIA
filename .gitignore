@@ -1,6 +1,7 @@
 # Dossiers générés par le workflow Talend — ignorés du versioning
-DDL/
+TABLES/
 XML/
+SEQUENCES/
 
 # Configuration locale utilisateur (agent Talend_DIA)
 .vscode/agent/Talend_DIA/talend-config.json
