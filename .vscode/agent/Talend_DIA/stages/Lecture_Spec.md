@@ -8,7 +8,7 @@ Lire le fichier spec depuis sharepoint
 - L’utilisateur fournit le nom de l’onglet Excel à analyser: `{{NOM_ONGLET_SPEC}}`
 
 ### 2. Source de données
-- Le fichier Excel se trouve à l’emplacement suivant :  `{{SHAREPOINT_SPEC_PATH}}`
+- Le fichier Excel `{{SPEC_NOM}}` se trouve à l’emplacement suivant :  `{{SHAREPOINT_SPEC_PATH}}`
 
 ### 3. Utilisation de l’outil
 - En utilisant @excel-mcp, Lire et extraire les données directement depuis le fichier Excel local indiqué.

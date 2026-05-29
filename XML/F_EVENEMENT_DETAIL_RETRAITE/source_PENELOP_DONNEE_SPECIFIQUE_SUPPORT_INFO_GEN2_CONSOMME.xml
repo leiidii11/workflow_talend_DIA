@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><schema dbmsId="snowflake_id"><column comment="" default="" key="false" label="REF_ID_SUPPORT_INFO_GENERALE" length="16777216" nullable="true" originalDbColumnName="REF_ID_SUPPORT_INFO_GENERALE" originalLength="0" pattern="" precision="0" talendType="id_String" type="VARCHAR"/></schema>

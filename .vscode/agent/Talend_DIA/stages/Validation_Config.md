@@ -7,13 +7,14 @@ Valider et initialiser la configuration utilisateur avant toute exécution du wo
 - Chemin: `.talend-config.json`
 - Structure de base: `talend-config.template.json`
 
+
 ### 2. Vérification d'existence
 1. Vérifier si le fichier `.talend-config.json` existe.
 2. S'il n'existe pas:
+   🚨 **ACTION REQUISE**
    - STOP temporaire
    - Poser les questions à l'utilisateur une par une, afin de récuperer la valeur de chaque variable.
    - Créer le fichier de config en reprenant la structure du template.
-   - Demander confirmation explicite avant de continuer le workflow.
 
 ### 3. Vérification de complétude
 1. Lire le fichier de config.

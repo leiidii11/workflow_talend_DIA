@@ -1,6 +1,8 @@
 {
-  "SHAREPOINT_SPEC_PATH": "C:\\Users\\marcelaa\\ALPTIS\\PRJ - Archi DATA groupe - Groupe\\Spécifications techniques DIA - Mapping.xlsx",
-  "SHAREPOINT_SEQUENCES_PATH": "C:\\Users\\marcelaa\\ALPTIS\\PRJ - Archi DATA groupe - Groupe\\Séquences.xlsx",
+  "SHAREPOINT_SPEC_PATH": "C:\\Users\\marcelaa\\ALPTIS\\PRJ - Archi DATA groupe - Groupe",
+  "SPEC_NOM": "Spécifications techniques DIA - Mapping.xlsx",
+  "SHAREPOINT_SEQUENCES_PATH": "C:\\Users\\marcelaa\\ALPTIS\\PRJ - Archi DATA groupe - Groupe",
+  "SEQUENCES_NOM": "Séquences.xlsx",
   "GITHUB_REPO_DIR": "C:\\Users\\marcelaa\\ALPTIS\\GithubBI\\snowflake_aps\\Databases\\DIA",
   "NOM_USER": "marcelaa"
 }
