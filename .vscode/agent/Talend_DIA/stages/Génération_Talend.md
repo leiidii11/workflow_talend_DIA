@@ -25,10 +25,7 @@ Les colonnes utilisé du excel source des données doivent être celles du PSA  
 
 
 #### Règles de typage Snowflake :
-- Types numériques → `NUMBER(38,0)`
-- Types textuels → `VARCHAR(16777216)`
-- Types temporels ou date → `TIMESTAMP_NTZ(9)`
-- Types boolean `BOOLEAN`
+- Utiliser les règles de typage définies dans `.vscode/agent/Talend_DIA/snowflake-typing.config.json`.
 
 
 #### Stockage fichier DDL
@@ -38,48 +35,48 @@ Les colonnes utilisé du excel source des données doivent être celles du PSA  
 
 ------
 ### Etape 2. Création fichier TMAP
-- En utilisant le template `tmap.xml`et la DDL généré `ddl_<NOM_TABLE>.sql`, generer un fichier xml
-- Ne prende pas en compte le champ `SK_<NOM_TABLE>` ni `DT_ALIM`
-- La clé primaire doit être en `VARCHAR(16777216)`
+- En utilisant le template `tmap.xml`et la DDL généré `ddl_{{NOM_ONGLET_SPEC}}.sql`, generer un fichier xml
+- Ne prende pas en compte le champ `SK_{{NOM_ONGLET_SPEC}}` ni `DT_ALIM`
+- La clé primaire doit être en type textuel (clé `TEXT_TYPE` du fichier `.vscode/agent/Talend_DIA/snowflake-typing.config.json`).
 - Tous les autres champs doivent être en `STRING`
-- Nommer le fichier selon la convention:  `tmap_<NOM_TABLE>.xml`
+- Nommer le fichier selon la convention:  `tmap_{{NOM_ONGLET_SPEC}}.xml`
 
 
 
 ### Etape 3. Création fichier MINUS
 - En utilisant tous les champs du DDL généré, créer un fichier sql avec la query adapté
-- où `colonnes` sont tous les champs sauf `SK_<NOM_TABLE>` `DT_ALIM`
+- où `colonnes` sont tous les champs sauf `SK_{{NOM_ONGLET_SPEC}}` `DT_ALIM`
 - voici le sql template:
 ```sql
-"CREATE TEMPORARY TABLE DIA.TMP_<NOM_TABLE>_MINUS
+CREATE TEMPORARY TABLE DIA.TMP_{{NOM_ONGLET_SPEC}}_MINUS
 as 
 select
 	`colonnes`
 	getdate() as DT_CREA,
 	getdate() as DT_MODIF
-from dia.tmp_<NOM_TABLE>
+from dia.tmp_{{NOM_ONGLET_SPEC}}
 minus
 select
     `colonnes`
 	getdate() as DT_CREA,
 	getdate() as DT_MODIF
-from dia.<NOM_TABLE> where sk_<NOM_TABLE> >0
-"
+from dia.{{NOM_ONGLET_SPEC}} where sk_{{NOM_ONGLET_SPEC}} >0
+
 ```
-- Nommer le fichier selon la convention:  `minus_<NOM_TABLE>.xml`
+- Nommer le fichier selon la convention:  `minus_{{NOM_ONGLET_SPEC}}.xml`
 
 ---------
 
 ### Etape 4. Création fichier MERGE
-- En utilisant le template `merge.xml`et la DDL généré `ddl_<NOM_TABLE>.sql`, generer un fichier xml
+- En utilisant le template `merge.xml`et la DDL généré `ddl_{{NOM_ONGLET_SPEC}}.sql`, generer un fichier xml
 - Ne prende pas en compte le champ  `DT_ALIM`
-- La `SK_<NOM_TABLE>`  doit être en `VARCHAR(16777216)`
+- La `SK_{{NOM_ONGLET_SPEC}}`  doit être en type textuel (clé `TEXT_TYPE` du fichier `.vscode/agent/Talend_DIA/snowflake-typing.config.json`).
 - Tous les autres champs doivent être en `STRING`
-- Nommer le fichier selon la convention:  `merge_<NOM_TABLE>.xml`
+- Nommer le fichier selon la convention:  `merge_{{NOM_ONGLET_SPEC}}.xml`
 
 ----------------
 
 
 #### Stockage des fichiers
 
-- Enregistrer tous fichier dans le dossier : `XML/<NOM_TABLE>/`
+- Enregistrer tous fichier dans le dossier : `XML/{{NOM_ONGLET_SPEC}}/`

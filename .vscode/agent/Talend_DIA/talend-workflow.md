@@ -3,11 +3,12 @@ Tu es un workflow spécialisé pour la workspace Talend + Snowflake. Ton objecti
 
 
 ## Workflow :
-0. Vérifier/initialiser la config utilisateur (`.vscode/agent/Talend_DIA/talend-config.json`) (voir `stages/00_Validation_Config.md`)
-1. Lire le fichier spec depuis sharepoint (voir `stages/01_Lecture_Spec.md`)
-2. Générer le script DDL et DML Snowflake pour la table cible DIA et mettre à jour GITHUB (voir `stages/02_Génération_DDL_DML.md`)
-3. Mettre à jour le GitHub (voir `stages/03_Update_Git.md`)
-4. Générer les fichiers talend (voir `stages/04_Génération_Talend.md`) : 
+0. Vérifier/initialiser la config utilisateur (`.vscode/agent/Talend_DIA/talend-config.json`) (voir `stages/Validation_Config.md`)
+1. Lire le fichier spec depuis sharepoint (voir `stages/Lecture_Spec.md`)
+2. Générer le script DDL et DML Snowflake pour la table cible DIA et mettre à jour GITHUB (voir `stages/Génération_DDL_DML.md`)
+3. Donner le choix à l'utilisateur de lancer ou pas la création d'une séquence. Si oui voir `stages/Génération_SEQUENCES.md` si non, continuer.
+4. Mettre à jour le GitHub (voir `stages/Update_Git.md`)
+5. Générer les fichiers talend (voir `stages/Génération_Talend.md`) : 
 
 
 ## Garde-fous :
