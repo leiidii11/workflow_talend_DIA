@@ -34,6 +34,7 @@ Les colonnes utilisé du excel source des données doivent être celles du DIA  
 - Types numériques → `NUMBER(38,0)`
 - Types textuels → `VARCHAR(16777216)`
 - Types temporels ou date → `TIMESTAMP_NTZ(9)`
+- Types boolean `BOOLEAN`
 
 
 #### Stockage fichier DDL
@@ -59,8 +60,9 @@ INSERT ALL
         )
     )
 ```
-- Tous les colonnes ID et colonne d'unicité doivent être à 0 ou à -1, selo son SK
+- Tous les colonnes ID et colonne d'unicité doivent être à -2 quand le SK_`<NOM_TABLE>`=0 ou à -1 quand le SK_`<NOM_TABLE>`=-1
 - les colonnes dt_crea, dt_modif, dt_alim doivent être à GETDATE()
+- Faire attention selon les types des champs
 - Créer le fichier en respectant les retours à la ligne et la mise en forme SQL, par exemple :
 ```sql
 INSERT ALL 

@@ -9,10 +9,10 @@ Lire le fichier spec depuis sharepoint
 
 ### 2. Source de données
 - Le fichier Excel se trouve à l’emplacement suivant :
-  `C:\Users\marcelaa\ALPTIS\PRJ - Swing - 30 - Spécifications\Spécifications techniques DIA - Mapping.xlsx`
+  `{{SHAREPOINT_SPEC_PATH}}`
 
 ### 3. Utilisation de l’outil
-- Utiliser obligatoirement le MCP `@excel-mcp` pour lire et extraire les données du fichier Excel.
+- Lire et extraire les données directement depuis le fichier Excel local indiqué.
 - Ne jamais supposer ou reconstituer les données
 
 

@@ -1,5 +1,0 @@
-__pycache__/
-*.pyc
-.runtime/
-output/
-config/workflow.config.local.json

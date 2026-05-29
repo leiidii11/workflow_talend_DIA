@@ -28,6 +28,7 @@ Les colonnes utilisé du excel source des données doivent être celles du PSA  
 - Types numériques → `NUMBER(38,0)`
 - Types textuels → `VARCHAR(16777216)`
 - Types temporels ou date → `TIMESTAMP_NTZ(9)`
+- Types boolean `BOOLEAN`
 
 
 #### Stockage fichier DDL

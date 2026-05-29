@@ -5,7 +5,7 @@ Mettre à jour le GitHub avec les nouveaux fichiers DDL et DML
 ## Instruction
 
 ### 1. Dossier cible
-- Répertoire Git `C:\Users\marcelaa\ALPTIS\Github BI\snowflake_aps\Databases\Schémas\DIA` (ou URL fournie par l’utilisateur)
+- Répertoire Git `{{GITHUB_REPO_DIR}}` (ou URL fournie par l’utilisateur)
 
 
 ### 2. Régles
