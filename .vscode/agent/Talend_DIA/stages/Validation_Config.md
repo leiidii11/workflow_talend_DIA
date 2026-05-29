@@ -4,7 +4,7 @@ Valider et initialiser la configuration utilisateur avant toute exécution du wo
 ## Instruction
 
 ### 1. Fichier de configuration attendu
-- Chemin: `.talend-config.json`
+- Chemin: `talend-config.json` (à la racine du workspace, hors de `.vscode`)
 - Structure de base: `talend-config.template.json`
 
 
@@ -31,7 +31,7 @@ Valider et initialiser la configuration utilisateur avant toute exécution du wo
    - STOP
    - expliquer la clé manquante
    - poser la question correspondante
-   - mettre à jour `talend-config.json`
+   - mettre à jour `talend-config.json` (à la racine du workspace)
    - relancer la résolution des placeholders avant de continuer.
 
 ### 5. Garde-fous

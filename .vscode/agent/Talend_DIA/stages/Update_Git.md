@@ -12,8 +12,12 @@ Mettre à jour le GitHub avec les nouveaux fichiers DDL et DML et Sequences et g
 ### 3. Actions Git
 1. Se positionner sur la branche `dev`
 2. Exécuter `git pull`
-3. Copier le fichier DDL `ddl_{{NOM_ONGLET_SPEC}}.sql` et DML `dml_{{NOM_ONGLET_SPEC}}.sql` créés avant dans le dossier cible `{{GITHUB_REPO_DIR}}`
-4. Copier le fichier sequences SI existe créés avant `{{NOM_ONGLET_SEQUENCE}}.sql` dans le dossier cible `{{GITHUB_REPO_DIR}}\SEQUENCES`
+3. Copier les fichiers suivants depuis le workspace vers le dossier cible `{{GITHUB_REPO_DIR}}` :
+   - Source : `TABLES/{{NOM_ONGLET_SPEC}}/ddl_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/ddl_{{NOM_ONGLET_SPEC}}.sql`
+   - Source : `TABLES/{{NOM_ONGLET_SPEC}}/dml_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/dml_{{NOM_ONGLET_SPEC}}.sql`
+4. SI le fichier séquence existe, le copier :
+   - Source : `SEQUENCES/{{NOM_ONGLET_SEQUENCE}}/{{NOM_ONGLET_SEQUENCE}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/SEQUENCES/{{NOM_ONGLET_SEQUENCE}}.sql`
+   - Créer le dossier `{{GITHUB_REPO_DIR}}/SEQUENCES/` s'il n'existe pas.
 5. ⚠️ Ne pas exécuter le commit ni le push
 
 

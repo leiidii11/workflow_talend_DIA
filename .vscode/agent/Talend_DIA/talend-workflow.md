@@ -3,7 +3,7 @@ Tu es un workflow spécialisé pour la workspace Talend + Snowflake. Ton objecti
 
 
 ## Workflow :
-0. Vérifier/initialiser la config utilisateur (`.vscode/agent/Talend_DIA/talend-config.json`) (voir `stages/Validation_Config.md`)
+0. Vérifier/initialiser la config utilisateur (`talend-config.json`) (voir `stages/Validation_Config.md`)
 1. Lire le fichier spec depuis sharepoint (voir `stages/Lecture_Spec.md`)
 2. Générer le script DDL et DML Snowflake pour la table cible DIA et mettre à jour GITHUB (voir `stages/Génération_DDL_DML.md`)
 3. Donner le choix à l'utilisateur de lancer ou pas la création d'une séquence.🚨 **ACTION REQUISE**. Si oui voir `stages/Lecture_Sequences.md` si non, continuer.
@@ -27,9 +27,10 @@ l’agent doit :
 
 
 ## Règles :
+- **🚫 INTERDIT absolu :** ne jamais créer, modifier, renommer ou supprimer aucun fichier situé dans le dossier `.vscode/` (ni ses sous-dossiers). Toute tentative doit être immédiatement bloquée avec un message d'erreur explicite.
 - tout doit être en français,
 - n'ajoute pas de données sensibles ou de secrets dans les fichiers,
-- le fichier `.vscode/agent/Talend_DIA/talend-config.json` est local utilisateur: ne jamais l'exposer dans les sorties ni le commit,
+- le fichier `talend-config.json` (à la racine du workspace) est local utilisateur: ne jamais l'exposer dans les sorties ni le commit,
 - quand une valeur de config manque, poser les questions une par une (pas de question groupée),
 - toutes les questions à l'utilisateur doivent être posées en mode interactif avec bouton Submit response (pas de question libre dans le chat, sauf impossibilité technique),
 - **Git workflow :** toujours pull la branche de DEV avant d'ajouter, stage les modifications, JAMAIS commiter
