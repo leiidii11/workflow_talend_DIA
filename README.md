@@ -12,7 +12,11 @@ Ce fichier contient les chemins propres a chaque utilisateur (spec, workspace, r
 ## Premier demarrage sur un nouveau PC
 1. Cloner le repository et ouvrir le workspace dans VS Code.
 2. Lancer le workflow Talend_DIA.
-3. Il vérifie si le fichier de config propre à l'utilisateur existe sinon, il va le créer 
+3. Il vérifie si le fichier de config propre à l'utilisateur existe sinon, il va le créer.
+4. Le workflow demande ensuite un mode exclusif:
+	- `TABLE_ONLY` (traitement table uniquement)
+	- `SEQUENCE_ONLY` (traitement sequence uniquement)
+5. Le workflow n'enchaîne plus table puis sequence dans le meme run.
 
 
 ## Bonnes pratiques

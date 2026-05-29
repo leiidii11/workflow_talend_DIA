@@ -4,11 +4,19 @@ Tu es un workflow spécialisé pour la workspace Talend + Snowflake. Ton objecti
 
 ## Workflow :
 0. Vérifier/initialiser la config utilisateur (`talend-config.json`) (voir `stages/Validation_Config.md`)
-1. Lire le fichier spec depuis sharepoint (voir `stages/Lecture_Spec.md`)
-2. Générer le script DDL et DML Snowflake pour la table cible DIA et mettre à jour GITHUB (voir `stages/Génération_DDL_DML.md`)
-3. Donner le choix à l'utilisateur de lancer ou pas la création d'une séquence.🚨 **ACTION REQUISE**. Si oui voir `stages/Lecture_Sequences.md` si non, continuer.
-4. Mettre à jour le GitHub (voir `stages/Update_Git.md`)
-5. Générer les fichiers talend (voir `stages/Génération_Talend.md`) : 
+1. Choisir le mode d'execution exclusif (voir `stages/Choix_Mode.md`) 🚨 **ACTION REQUISE**
+2. Si `{{EXECUTION_MODE}} = TABLE_ONLY`:
+	- Lire le fichier spec depuis sharepoint (voir `stages/Lecture_Spec.md`)
+	- Générer le script DDL et DML Snowflake pour la table cible DIA (voir `stages/Génération_DDL_DML.md`)
+	- Mettre à jour le GitHub (voir `stages/Update_Git.md`)
+	- Générer les fichiers talend (voir `stages/Génération_Talend.md`)
+3. Si `{{EXECUTION_MODE}} = SEQUENCE_ONLY`:
+	- Lire la source sequences (voir `stages/Lecture_Sequences.md`)
+	- Mettre à jour le GitHub (voir `stages/Update_Git.md`)
+
+## Contrat d'execution
+- Le mode est exclusif: dans un meme run, lancer soit `TABLE_ONLY`, soit `SEQUENCE_ONLY`.
+- Interdit d'executer table puis sequence dans le meme enchainement.
 
 
 ## Garde-fous :

@@ -1,5 +1,5 @@
 ## Objective
-Mettre à jour le GitHub avec les nouveaux fichiers DDL et DML et Sequences et générer la commande MERGE
+Mettre à jour le GitHub selon le mode exclusif d'execution et générer la commande MERGE
 
 
 ## Etape 1: Update GIT
@@ -12,12 +12,14 @@ Mettre à jour le GitHub avec les nouveaux fichiers DDL et DML et Sequences et g
 ### 3. Actions Git
 1. Se positionner sur la branche `dev`
 2. Exécuter `git pull`
-3. Copier les fichiers suivants depuis le workspace vers le dossier cible `{{GITHUB_REPO_DIR}}` :
-   - Source : `TABLES/{{NOM_ONGLET_SPEC}}/ddl_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/ddl_{{NOM_ONGLET_SPEC}}.sql`
-   - Source : `TABLES/{{NOM_ONGLET_SPEC}}/dml_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/dml_{{NOM_ONGLET_SPEC}}.sql`
-4. SI le fichier séquence existe, le copier :
-   - Source : `SEQUENCES/{{NOM_ONGLET_SEQUENCE}}/{{NOM_ONGLET_SEQUENCE}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/SEQUENCES/{{NOM_ONGLET_SEQUENCE}}.sql`
-   - Créer le dossier `{{GITHUB_REPO_DIR}}/SEQUENCES/` s'il n'existe pas.
+3. Appliquer les copies selon `{{EXECUTION_MODE}}`:
+   - Si `TABLE_ONLY`:
+     - Source : `TABLES/{{NOM_ONGLET_SPEC}}/ddl_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/ddl_{{NOM_ONGLET_SPEC}}.sql`
+     - Source : `TABLES/{{NOM_ONGLET_SPEC}}/dml_{{NOM_ONGLET_SPEC}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/dml_{{NOM_ONGLET_SPEC}}.sql`
+   - Si `SEQUENCE_ONLY`:
+     - Source : `SEQUENCES/{{NOM_ONGLET_SEQUENCE}}/{{NOM_ONGLET_SEQUENCE}}.sql` → Destination : `{{GITHUB_REPO_DIR}}/SEQUENCES/{{NOM_ONGLET_SEQUENCE}}.sql`
+     - Créer le dossier `{{GITHUB_REPO_DIR}}/SEQUENCES/` s'il n'existe pas.
+4. ⚠️ Interdit de copier les fichiers de l'autre mode.
 5. ⚠️ Ne pas exécuter le commit ni le push
 
 
@@ -33,7 +35,7 @@ Tous les fichiers doivent être ajoutés dans la même commande, à la suite les
 
 
 ## 2. Règles de génération
-### Si la valeur de la séquence existe
+### Si `{{EXECUTION_MODE}} = SEQUENCE_ONLY` et la valeur de la séquence existe
 Ajouter les fichiers suivants :
 
 ```bash
@@ -41,7 +43,7 @@ Ajouter les fichiers suivants :
 "Databases/Schémas/DIA/dml_<VALEUR>.sql"
 ```
 
-### Sinon
+### Si `{{EXECUTION_MODE}} = TABLE_ONLY`
 Utiliser `{{NOM_ONGLET_SPEC}}` :
 
 ```bash
