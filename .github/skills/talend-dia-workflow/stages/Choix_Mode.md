@@ -1,23 +1,17 @@
-# Stage: Choix_Mode
+## Objective
+Choisir un mode d'execution exclusif pour le workflow.
 
-## Objectif
-Obtenir le mode d execution exclusif du run.
+## Instruction
 
-## Modes autorises
-- TABLE_ONLY
-- SEQUENCE_ONLY
+### 1. Question obligatoire a l'utilisateur
+- Poser une question interactive (bouton Submit response) avec 2 choix exclusifs:
+  - `TABLE_ONLY` : generer uniquement le flux table (spec + DDL/DML + Talend + Git table)
+  - `SEQUENCE_ONLY` : generer uniquement le flux sequence (lecture sequence + SQL sequence + Git sequence)
 
-## Procedure
-1. Demander explicitement le mode via interaction utilisateur.
-2. Valider que la reponse est exactement `TABLE_ONLY` ou `SEQUENCE_ONLY`.
-3. Memoriser `EXECUTION_MODE` pour les etapes suivantes.
+### 2. Regles
+- Interdire toute execution mixte dans un meme run.
+- Ne pas enchaîner table puis sequence automatiquement.
+- Enregistrer le choix dans `{{EXECUTION_MODE}}`.
 
-## Contrat d execution
-- Un seul mode par run.
-- Interdit d enchainer TABLE_ONLY puis SEQUENCE_ONLY dans le meme run.
-
-## Erreurs bloquantes
-Si le mode est vide ou invalide:
-- STOP
-- expliquer le format attendu
-- redemander la valeur
+### 3. Validation
+- Si la valeur n'est pas `TABLE_ONLY` ou `SEQUENCE_ONLY`, afficher une erreur claire et arreter.

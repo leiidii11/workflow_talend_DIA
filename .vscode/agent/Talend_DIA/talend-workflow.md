@@ -12,6 +12,7 @@ Tu es un workflow spécialisé pour la workspace Talend + Snowflake. Ton objecti
 	- Générer les fichiers talend (voir `stages/Génération_Talend.md`)
 3. Si `{{EXECUTION_MODE}} = SEQUENCE_ONLY`:
 	- Lire la source sequences (voir `stages/Lecture_Sequences.md`)
+	- Générer le script SQL de séquence (voir `stages/Génération_Sequences.md`)
 	- Mettre à jour le GitHub (voir `stages/Update_Git.md`)
 
 ## Contrat d'execution

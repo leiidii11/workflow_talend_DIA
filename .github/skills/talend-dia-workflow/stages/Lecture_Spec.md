@@ -1,22 +1,22 @@
-# Stage: Lecture_Spec
+## Objective 
+Lire le fichier spec depuis sharepoint 
 
-## Objectif
-Lire le fichier de specification de la table DIA depuis SharePoint (ou source equivalente configuree).
 
-## Procedure
-1. Recuperer le fichier source specifie par la configuration.
-2. Verifier que les colonnes attendues sont presentes.
-3. Verifier les types et contraintes minimales necessaires a la generation DDL/DML.
-4. Normaliser les metadonnees pour la suite du pipeline.
+## Instruction
 
-## Criteres de validation
-- Le fichier est lisible.
-- Les colonnes obligatoires existent.
-- Les metadonnees sont coherentes.
+### 1. Entrée
+- L’utilisateur fournit le nom de l’onglet Excel à analyser: `{{NOM_ONGLET_SPEC}}`
 
-## Erreurs bloquantes
-Si Excel est mal lu ou si des colonnes manquent:
-- STOP
-- decrire precisement les colonnes manquantes/invalides
-- demander correction
-- ne rien generer
+### 2. Source de données
+- Le fichier Excel `{{SPEC_NOM}}` se trouve à l’emplacement suivant :  `{{SHAREPOINT_SPEC_PATH}}`
+
+### 3. Utilisation de l’outil
+- En utilisant @excel-mcp, Lire et extraire les données directement depuis le fichier Excel local indiqué.
+- Ne jamais supposer ou reconstituer les données
+- Ne JAMAIS modier le fichier en local
+
+
+### 5. Contraintes
+- Ne pas inventer de valeurs manquantes.
+- Conserver strictement les noms des colonnes tels qu’ils apparaissent dans le fichier.
+- Si l’onglet demandé n’existe pas, retourner une erreur claire et arrêter le traitement.

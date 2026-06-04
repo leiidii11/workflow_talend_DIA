@@ -58,7 +58,16 @@ INSERT ALL
         )
     )
 ```
-- Créer le fichier en respectant les retours à la ligne et la mise en forme SQL, par exemple :
+
+### Regles de creation du fichier DML
+- Respecter strictement les retours a la ligne et la mise en forme SQL.
+- Chaque clause `WHEN`, `THEN INTO` et `VALUES` doit être écrite sur une seule ligne.
+- Ne jamais insérer de retour à la ligne à l'intérieur d'une clause `WHEN`.
+- Ne jamais insérer de retour à la ligne dans la liste des colonnes après `THEN INTO`.
+- Ne jamais insérer de retour à la ligne dans la liste des valeurs après `VALUES`.
+L- es seuls retours à la ligne autorisés sont entre les blocs `WHEN`, `THEN INTO` et `VALUES`
+
+Exemple attendu:
 ```sql
 INSERT ALL 
 WHEN (...)
@@ -82,7 +91,7 @@ Tous les autres champs → valeur = NULL
 
 🔹 Cas 2 : SK = -1
 Champs commençant par CD → valeur = N/A
-Champs commençant par MT`` ou TAUX` → valeur = (vide)
+Champs commençant par MT ou TAUX → valeur = (vide)
 Champs commençant par FK ou ID → valeur = -1
 Tous les autres champs → valeur = NULL
 

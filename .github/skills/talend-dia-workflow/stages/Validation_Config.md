@@ -1,25 +1,41 @@
-# Stage: Validation_Config
+## Objective
+Valider et initialiser la configuration utilisateur avant toute exécution du workflow.
 
-## Objectif
-Verifier ou initialiser la configuration utilisateur `talend-config.json` a la racine du workspace.
+## Instruction
 
-## Entrees attendues
-- Fichier `talend-config.json` (local utilisateur)
+### 1. Fichier de configuration attendu
+- Chemin: `talend-config.json` (à la racine du workspace, hors de `.vscode`)
+- Structure de base: `talend-config.template.json`
 
-## Procedure
-1. Verifier si le fichier existe.
-2. Si le fichier est absent, demander les informations minimales une par une en mode interactif.
-3. Si le fichier existe mais des cles obligatoires manquent, poser les questions une par une.
-4. Valider la coherence des valeurs avant de continuer le workflow.
 
-## Regles obligatoires
-- Ne jamais afficher le contenu complet de `talend-config.json` dans les sorties.
-- Ne jamais commiter ce fichier.
-- Toutes les questions doivent etre posees de facon interactive avec validation explicite.
+### 2. Vérification d'existence
+1. Vérifier si le fichier `.talend-config.json` existe.
+2. S'il n'existe pas:
+   🚨 **ACTION REQUISE**
+   - STOP temporaire
+   - Poser les questions à l'utilisateur une par une, afin de récuperer la valeur de chaque variable.
+   - Créer le fichier de config en reprenant la structure du template.
 
-## Erreurs bloquantes
-Si une valeur critique est absente ou incoherente:
-- STOP
-- expliquer l erreur
-- demander correction
-- ne pas poursuivre les etapes suivantes
+### 3. Vérification de complétude
+1. Lire le fichier de config.
+2. Pour chaque clé manquante ou vide:
+   - Poser uniquement la question liée à cette clé (une seule question à la fois).
+   - Mettre à jour le fichier de config.
+3. Demander confirmation explicite avant de continuer le workflow.
+
+### 4. Chargement runtime automatique (sans mapping manuel)
+1. Charger toutes les clés non vides du JSON en variables runtime.
+2. Appliquer une règle générique de résolution:
+   - toute clé JSON `NOM_CLE` est automatiquement disponible comme placeholder `{{NOM_CLE}}`.
+3. Si un placeholder `{{...}}` est utilisé dans le workflow mais absent du JSON:
+   - STOP
+   - expliquer la clé manquante
+   - poser la question correspondante
+   - mettre à jour `talend-config.json` (à la racine du workspace)
+   - relancer la résolution des placeholders avant de continuer.
+
+### 5. Garde-fous
+- Ne jamais inventer de valeurs.
+- Ne pas continuer tant qu'une clé obligatoire est absente ou vide.
+- Ne pas exposer les chemins locaux dans les sorties finales.
+- Ne jamais proposer de commit du fichier `talend-config.json`.
